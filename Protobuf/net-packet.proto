@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option go_package = "imsystem/pb";
+package pb;
+
+//协议类型
+enum ProtoType{
+    PROTO_TYPE_UNKNOWN = 0;
+    PROTO_TYPE_REQUEST = 1;
+    PROTO_TYPE_RESPONSE = 2;
+    PROTO_TYPE_PUSH = 3;
+}
+
+////////////////////
+
+message HeadPack{
+    ProtoType proto_type = 1;
+    uint32 pid = 2;//消息唯一id(请求、响应才会有)
+    uint32 type = 3;
+    uint32 code = 4;//响应才会有
+}

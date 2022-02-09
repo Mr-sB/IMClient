@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+option go_package = "imsystem/pb";
+package pb;
+
+//请求/响应类型
+enum OpType{
+    OP_TYPE_UNKNOWN = 0;
+    OP_TYPE_HEARTBEAT = 1;
+    OP_TYPE_BROADCAST = 2;
+    OP_TYPE_QUERY = 3;
+    OP_TYPE_RENAME = 4;
+    OP_TYPE_PRIVATE_CHAT = 5;
+}
+
+//推送类型
+enum PushType{
+    PUSH_TYPE_UNKNOWN = 0;
+    PUSH_TYPE_KICK = 1;
+    PUSH_TYPE_BROADCAST = 2;
+    PUSH_TYPE_PRIVATE_CHAT = 3;
+}
+
+message HeartbeatReq{
+}
+
+message HeartbeatRsp{
+}
+
+message BroadcastReq{
+    string content = 1;
+}
+
+message BroadcastRsp{
+}
+
+message QueryReq{
+}
+
+message QueryRsp{
+    repeated string users = 1;
+}
+
+message RenameReq{
+    string new_name = 1;
+}
+
+message RenameRsp{
+    string new_name = 1;
+}
+
+message PrivateChatReq{
+    string user = 1;
+    string content = 2;
+}
+
+message PrivateChatRsp{
+}
+
+////////////////////
+
+message KickPush{
+}
+
+message BroadcastPush{
+    string user = 1;
+    string content = 2;
+}
+
+message PrivateChatPush{
+    string user = 1;
+    string content = 2;
+}

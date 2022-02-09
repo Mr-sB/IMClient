@@ -38,8 +38,6 @@ ExportedObj/
 *.pidb
 *.booproj
 *.svd
-*.pdb
-*.mdb
 *.opendb
 *.VC.db
 
@@ -58,3 +56,4 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+.idea
