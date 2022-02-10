@@ -107,17 +107,17 @@ namespace Net
             connection.Disconnect();
         }
 
-        public void SendRequest(Package package, ResponseDelegate callback = null, float timeout = 5)
+        public void SendRequest(Package package, OnResponseDelegate callback = null, float timeout = 5)
         {
             connection.SendRequest(package, callback, timeout);
         }
 
-        public void SendRequest(OpType opType, IMessage request, ResponseDelegate callback = null, float timeout = 5)
+        public void SendRequest(OpType opType, IMessage request, OnResponseDelegate callback = null, float timeout = 5)
         {
             connection.SendRequest((uint) opType, request, callback, timeout);
         }
 
-        public void SendRequest(HeadPack head, IMessage request, ResponseDelegate callback = null, float timeout = 5)
+        public void SendRequest(HeadPack head, IMessage request, OnResponseDelegate callback = null, float timeout = 5)
         {
             connection.SendRequest(head, request, callback, timeout);
         }

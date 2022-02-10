@@ -29,12 +29,12 @@ public class ClientView : MonoBehaviour
         privateChatBtn.onClick.AddListener(OnPrivateChatClick);
     }
 
-    private void SendRequest(OpType opType, IMessage request, ResponseDelegate callback = null, float timeout = 5)
+    private void SendRequest(OpType opType, IMessage request, OnResponseDelegate callback = null, float timeout = 5)
     {
         TcpNetManager.Instance.SendRequest(opType, request, (success, package) => { OnResponse(success, package, callback); }, timeout);
     }
 
-    private void OnResponse(bool success, Package package, ResponseDelegate callback)
+    private void OnResponse(bool success, Package package, OnResponseDelegate callback)
     {
         if (!success)
             ShowText("请求失败");

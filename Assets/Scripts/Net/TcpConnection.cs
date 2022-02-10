@@ -23,19 +23,22 @@ namespace Net
 
     public class RequestData
     {
-        public ResponseDelegate Callback;
-        public float Timeout;
-        public float Elapsed;
+        public readonly OnResponseDelegate Callback;
+        public readonly float Timeout;
+        public float Elapsed { private set; get; }
 
-        public RequestData(ResponseDelegate callback, float timeout)
+        public RequestData(OnResponseDelegate callback, float timeout)
         {
             Callback = callback;
             Timeout = timeout;
             Elapsed = 0;
         }
 
+        /// <returns>timeout</returns>
         public bool Tick(float deltaTime)
         {
+            //Never timeout
+            if (Timeout < 0) return false;
             Elapsed += deltaTime;
             return Elapsed >= Timeout;
         }
@@ -45,7 +48,7 @@ namespace Net
 
     public delegate void OnPushDelegate(Package package);
 
-    public delegate void ResponseDelegate(bool success, Package package);
+    public delegate void OnResponseDelegate(bool success, Package package);
 
     public class TcpConnection
     {
@@ -70,7 +73,7 @@ namespace Net
         {
             this.onStateChangeHandler = onStateChangeHandler;
         }
-        
+
         public void SetOnPushHandler(OnPushDelegate onPushHandler)
         {
             this.onPushHandler = onPushHandler;
@@ -94,19 +97,19 @@ namespace Net
                 onStateChangeHandler(ConnectionEvent.ManualDisconnect, SocketErrorCode.None);
         }
 
-        public void SendRequest(Package package, ResponseDelegate callback = null, float timeout = 5)
+        public void SendRequest(Package package, OnResponseDelegate callback = null, float timeout = 5)
         {
             if (State != ConnectionState.Connected) return;
             SendRequest(package.Head, package.Body, callback, timeout);
         }
 
-        public void SendRequest(uint type, IMessage request, ResponseDelegate callback = null, float timeout = 5)
+        public void SendRequest(uint type, IMessage request, OnResponseDelegate callback = null, float timeout = 5)
         {
             if (State != ConnectionState.Connected) return;
             SendRequest(NewRequestHead(type), request, callback, timeout);
         }
 
-        public void SendRequest(HeadPack head, IMessage request, ResponseDelegate callback = null, float timeout = 5)
+        public void SendRequest(HeadPack head, IMessage request, OnResponseDelegate callback = null, float timeout = 5)
         {
             if (State != ConnectionState.Connected) return;
             requestDataDict[head.Pid] = new RequestData(callback, timeout);
