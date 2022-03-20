@@ -92,11 +92,12 @@ namespace Pb
             ReadAtLeast(socket, TotalLen + HeadLen, headLen);
             package.Head.MergeFrom(currentBytes, TotalLen + HeadLen, headLen);
             //读取消息体
-            ReadAtLeast(socket, TotalLen + HeadLen + headLen, headLen);
+            var bodyLen = (int) (totalLen - TotalLen - HeadLen - headLen);
+            ReadAtLeast(socket, TotalLen + HeadLen + headLen, bodyLen);
             try
             {
                 package.Body = bodyCreator?.Invoke(package.Head);
-                package.Body?.MergeFrom(currentBytes, TotalLen + HeadLen + headLen, (int) (totalLen - TotalLen - HeadLen - headLen));
+                package.Body?.MergeFrom(currentBytes, TotalLen + HeadLen + headLen, bodyLen);
             }
             finally
             {
